@@ -9042,15 +9042,6 @@ ImageColor3="TabBackground",
 },
 ImageTransparency=1,
 },{
-ap.Glow and (function()
-local s=Instance.new("UIStroke")
-s.Name="Glow"
-s.Color=ap.GlowColor
-s.Thickness=1.5
-s.Transparency=1
-s.ApplyStrokeMode=Enum.ApplyStrokeMode.Border
-return s
-end)() or nil,
 af.NewRoundFrame(ap.UICorner,"SquircleOutline",{
 Size=UDim2.new(1,0,1,0),
 ThemeTag={
@@ -9112,6 +9103,26 @@ PaddingBottom=UDim.new(0,2+(Window.UIPadding/2)),
 })
 }),
 },true)
+
+if ap.Glow then
+local glowFrame=Instance.new("Frame")
+glowFrame.Name="GlowFrame"
+glowFrame.Size=UDim2.new(1,0,1,0)
+glowFrame.BackgroundTransparency=1
+glowFrame.ZIndex=ap.UIElements.Main.ZIndex+1
+local corner=Instance.new("UICorner")
+corner.CornerRadius=UDim.new(0,ap.UICorner)
+corner.Parent=glowFrame
+local s=Instance.new("UIStroke")
+s.Name="Glow"
+s.Color=ap.GlowColor
+s.Thickness=1.5
+s.Transparency=1
+s.ApplyStrokeMode=Enum.ApplyStrokeMode.Border
+s.Parent=glowFrame
+glowFrame.Parent=ap.UIElements.Main
+ap.UIElements.GlowFrame=glowFrame
+end
 
 local ar=0
 local as
@@ -9464,8 +9475,8 @@ aj(aq.UIElements.Main.Frame.TextLabel,0.15,{TextTransparency=0.3}):Play()
 if aq.UIElements.Icon then
 aj(aq.UIElements.Icon.ImageLabel,0.15,{ImageTransparency=0.4}):Play()
 end
-if aq.Glow then
-local g=aq.UIElements.Main:FindFirstChild("Glow")
+if aq.Glow and aq.UIElements.GlowFrame then
+local g=aq.UIElements.GlowFrame:FindFirstChild("Glow")
 if g then aj(g,0.15,{Transparency=1}):Play() end
 end
 aq.Selected=false
@@ -9477,8 +9488,8 @@ aj(am.Tabs[ao].UIElements.Main.Frame.TextLabel,0.15,{TextTransparency=0}):Play()
 if am.Tabs[ao].UIElements.Icon then
 aj(am.Tabs[ao].UIElements.Icon.ImageLabel,0.15,{ImageTransparency=0.1}):Play()
 end
-if am.Tabs[ao].Glow then
-local g=am.Tabs[ao].UIElements.Main:FindFirstChild("Glow")
+if am.Tabs[ao].Glow and am.Tabs[ao].UIElements.GlowFrame then
+local g=am.Tabs[ao].UIElements.GlowFrame:FindFirstChild("Glow")
 if g then aj(g,0.3,{Transparency=0.2}):Play() end
 end
 am.Tabs[ao].Selected=true
