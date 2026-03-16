@@ -11202,6 +11202,7 @@ g.Parent=l
 g.Size=UDim2.new(0,as.IconSize,0,as.IconSize)
 g.Position=UDim2.new(0.5,0,0.5,0)
 g.AnchorPoint=Vector2.new(0.5,0.5)
+as.UIElements.TopbarIcon=g
 
 as.OpenButtonMain:SetIcon(as.Icon)
 
@@ -11228,6 +11229,35 @@ end
 function as.SetTitle(l,m)
 as.Title=m
 h.Text=m
+end
+
+function as.SetIcon(l,m)
+as.Icon=m
+pcall(function()
+if as.UIElements.TopbarIcon then
+local oldParent=as.UIElements.TopbarIcon.Parent
+as.UIElements.TopbarIcon:Destroy()
+local newIcon=aj.Image(m,as.Title,0,as.Folder,"Window",true,as.IconThemed,"WindowTopbarIcon")
+newIcon.Size=UDim2.new(0,as.IconSize,0,as.IconSize)
+newIcon.Position=UDim2.new(0.5,0,0.5,0)
+newIcon.AnchorPoint=Vector2.new(0.5,0.5)
+newIcon.Parent=oldParent
+as.UIElements.TopbarIcon=newIcon
+end
+as.OpenButtonMain:SetIcon(m)
+end)
+end
+
+function as.SetTag(l,m)
+-- Clear existing tags then create a new one
+local center=as.UIElements.Main.Main.Topbar.Center
+for _,child in ipairs(center:GetChildren()) do
+pcall(function() child:Destroy() end)
+end
+center.Visible=false
+if m then
+as:Tag(m)
+end
 end
 
 function as.SetAuthor(l,m)
