@@ -3753,16 +3753,17 @@ Padding=UDim.new(0,ah.Padding/1.5)
 -- Invisible = true: transparent fill, keep border outline only
 if ah.Invisible then
 al.ImageTransparency=1
-aj.TextColor3=typeof(ah.Color)=="Color3"and ah.Color or Color3.fromHex"#315dff"
-if ai then ai.ImageLabel.ImageColor3=typeof(ah.Color)=="Color3"and ah.Color or Color3.fromHex"#315dff" end
-ab.NewRoundFrame(ah.Radius,"Squircle-Outline",{
-AutomaticSize="X",
+local outlineColor=typeof(ah.Color)=="Color3"and ah.Color or Color3.fromHex"#315dff"
+aj.TextColor3=outlineColor
+if ai then ai.ImageLabel.ImageColor3=outlineColor end
+local outline=ab.NewRoundFrame(ah.Radius,"Squircle-Outline",{
 Size=UDim2.new(1,0,1,0),
-ImageColor3=typeof(ah.Color)=="Color3"and ah.Color or Color3.fromHex"#315dff",
-ImageTransparency=0.5,
-Parent=al,
+ImageColor3=outlineColor,
+ImageTransparency=0.3,
+BackgroundTransparency=1,
 ZIndex=al.ZIndex+1,
 })
+outline.Parent=al
 end
 
 
@@ -4706,6 +4707,7 @@ Color=af.Color,
 Scalable=af.Scalable,
 Parent=af.Parent,
 Justify=af.Justify or"Between",
+LockedTitle=af.LockedTitle or"Locked",
 UIPadding=af.Window.ElementConfig.UIPadding,
 UICorner=af.Window.ElementConfig.UICorner,
 UIElements={},
@@ -4862,7 +4864,7 @@ ap.ImageLabel.ImageColor3=Color3.new(1,1,1)
 ap.ImageLabel.ImageTransparency=.4
 
 local aq=ab("TextLabel",{
-Text="Locked",
+Text=ag.LockedTitle,
 TextSize=18,
 FontFace=Font.new(aa.Font,Enum.FontWeight.Medium),
 AutomaticSize="XY",
@@ -8363,6 +8365,7 @@ FontWeight=ak.FontWeight or Enum.FontWeight.SemiBold,
 TextTransparency=ak.TextTransparency or 0.05,
 Opened=ak.Opened or false,
 Locked=ak.Locked or false,
+LockedTitle=ak.LockedTitle or"🔒",
 UIElements={},
 
 HeaderSize=hasDesc and 62 or 42,
@@ -8575,7 +8578,7 @@ CornerRadius=UDim.new(0,ak.Window.ElementConfig.UICorner),
 ae("TextLabel",{
 Size=UDim2.new(1,0,1,0),
 BackgroundTransparency=1,
-Text="🔒",
+Text=al.LockedTitle,
 TextSize=20,
 TextXAlignment="Center",
 TextYAlignment="Center",
