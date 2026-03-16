@@ -9064,15 +9064,7 @@ NumberSequenceKeypoint.new(1.0,0.1),
 }
 }),
 }),
-ap.Glow and (function()
-local s=Instance.new("UIStroke")
-s.Name="Glow"
-s.Color=ap.GlowColor
-s.Thickness=1.5
-s.Transparency=1
-s.ApplyStrokeMode=Enum.ApplyStrokeMode.Border
-return s
-end)()or nil,
+}),
 af.NewRoundFrame(ap.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
@@ -9112,6 +9104,22 @@ PaddingBottom=UDim.new(0,2+(Window.UIPadding/2)),
 })
 }),
 },true)
+
+if ap.Glow then
+ah("ImageLabel",{
+Name="Glow",
+Image="rbxassetid://8992230677",
+ImageColor3=ap.GlowColor,
+ImageTransparency=1,
+ScaleType=Enum.ScaleType.Slice,
+SliceCenter=Rect.new(99,99,99,99),
+Size=UDim2.new(1,24,1,24),
+Position=UDim2.new(0,-12,0,-12),
+BackgroundTransparency=1,
+ZIndex=0,
+Parent=ap.UIElements.Main,
+})
+end
 
 local ar=0
 local as
@@ -9465,7 +9473,7 @@ if aq.UIElements.Icon then
 aj(aq.UIElements.Icon.ImageLabel,0.15,{ImageTransparency=0.4}):Play()
 end
 if aq.Glow and aq.UIElements.Main:FindFirstChild("Glow") then
-aj(aq.UIElements.Main.Glow,0.15,{Transparency=1}):Play()
+aj(aq.UIElements.Main.Glow,0.15,{ImageTransparency=1}):Play()
 end
 aq.Selected=false
 end
@@ -9477,7 +9485,7 @@ if am.Tabs[ao].UIElements.Icon then
 aj(am.Tabs[ao].UIElements.Icon.ImageLabel,0.15,{ImageTransparency=0.1}):Play()
 end
 if am.Tabs[ao].Glow and am.Tabs[ao].UIElements.Main:FindFirstChild("Glow") then
-aj(am.Tabs[ao].UIElements.Main.Glow,0.3,{Transparency=0.3}):Play()
+aj(am.Tabs[ao].UIElements.Main.Glow,0.3,{ImageTransparency=0.5}):Play()
 end
 am.Tabs[ao].Selected=true
 
