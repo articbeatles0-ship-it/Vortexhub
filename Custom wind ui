@@ -9104,14 +9104,24 @@ PaddingBottom=UDim.new(0,2+(Window.UIPadding/2)),
 },true)
 
 if ap.Glow then
-local glowStroke=ah("UIStroke",{
+local glowFrame=ah("Frame",{
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+ZIndex=ap.UIElements.Main.ZIndex+1,
+Parent=ap.UIElements.Main,
+},{
+ah("UICorner",{
+CornerRadius=UDim.new(0,ap.UICorner),
+}),
+ah("UIStroke",{
 Color=ap.GlowColor,
 Thickness=1.5,
 Transparency=1,
 ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
+}),
 })
-glowStroke.Parent=ap.UIElements.Main
-ap.UIElements.GlowStroke=glowStroke
+ap.UIElements.GlowFrame=glowFrame
+ap.UIElements.GlowStroke=glowFrame:FindFirstChildOfClass("UIStroke")
 end
 
 local ar=0
