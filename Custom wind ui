@@ -9104,44 +9104,7 @@ PaddingBottom=UDim.new(0,2+(Window.UIPadding/2)),
 },true)
 
 if ap.Glow then
--- Outer bloom layer (thick, very transparent = soft halo)
-local glowOuter=ah("Frame",{
-Size=UDim2.new(1,6,1,6),
-Position=UDim2.new(0,-3,0,-3),
-BackgroundTransparency=1,
-ZIndex=ap.UIElements.Main.ZIndex,
-Parent=ap.UIElements.Main,
-},{
-ah("UICorner",{
-CornerRadius=UDim.new(0,ap.UICorner+3),
-}),
-ah("UIStroke",{
-Color=ap.GlowColor,
-Thickness=4,
-Transparency=1,
-ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
-}),
-})
--- Mid bloom layer
-local glowMid=ah("Frame",{
-Size=UDim2.new(1,2,1,2),
-Position=UDim2.new(0,-1,0,-1),
-BackgroundTransparency=1,
-ZIndex=ap.UIElements.Main.ZIndex,
-Parent=ap.UIElements.Main,
-},{
-ah("UICorner",{
-CornerRadius=UDim.new(0,ap.UICorner+1),
-}),
-ah("UIStroke",{
-Color=ap.GlowColor,
-Thickness=2.5,
-Transparency=1,
-ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
-}),
-})
--- Inner crisp border layer
-local glowInner=ah("Frame",{
+local glowFrame=ah("Frame",{
 Size=UDim2.new(1,0,1,0),
 BackgroundTransparency=1,
 ZIndex=ap.UIElements.Main.ZIndex+1,
@@ -9152,15 +9115,13 @@ CornerRadius=UDim.new(0,ap.UICorner),
 }),
 ah("UIStroke",{
 Color=ap.GlowColor,
-Thickness=1,
+Thickness=1.5,
 Transparency=1,
 ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
 }),
 })
-ap.UIElements.GlowOuter=glowOuter
-ap.UIElements.GlowMid=glowMid
-ap.UIElements.GlowInner=glowInner
-ap.UIElements.GlowStroke=glowInner:FindFirstChildOfClass("UIStroke")
+ap.UIElements.GlowFrame=glowFrame
+ap.UIElements.GlowStroke=glowFrame:FindFirstChildOfClass("UIStroke")
 end
 
 local ar=0
@@ -9515,8 +9476,6 @@ if aq.UIElements.Icon then
 aj(aq.UIElements.Icon.ImageLabel,0.15,{ImageTransparency=0.4}):Play()
 end
 if aq.UIElements.GlowStroke then
-aj(aq.UIElements.GlowOuter:FindFirstChildOfClass("UIStroke"),0.15,{Transparency=1}):Play()
-aj(aq.UIElements.GlowMid:FindFirstChildOfClass("UIStroke"),0.15,{Transparency=1}):Play()
 aj(aq.UIElements.GlowStroke,0.15,{Transparency=1}):Play()
 end
 aq.Selected=false
@@ -9529,9 +9488,7 @@ if am.Tabs[ao].UIElements.Icon then
 aj(am.Tabs[ao].UIElements.Icon.ImageLabel,0.15,{ImageTransparency=0.1}):Play()
 end
 if am.Tabs[ao].UIElements.GlowStroke then
-aj(am.Tabs[ao].UIElements.GlowOuter:FindFirstChildOfClass("UIStroke"),0.2,{Transparency=0.6}):Play()
-aj(am.Tabs[ao].UIElements.GlowMid:FindFirstChildOfClass("UIStroke"),0.2,{Transparency=0.35}):Play()
-aj(am.Tabs[ao].UIElements.GlowStroke,0.2,{Transparency=0.05}):Play()
+aj(am.Tabs[ao].UIElements.GlowStroke,0.15,{Transparency=0}):Play()
 end
 am.Tabs[ao].Selected=true
 
