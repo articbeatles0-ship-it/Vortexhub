@@ -9014,6 +9014,8 @@ IconThemed=an.IconThemed,
 Locked=an.Locked,
 ShowTabTitle=an.ShowTabTitle,
 TabTitleAlign=an.TabTitleAlign or "Left",
+Glow=an.Glow or false,
+GlowColor=an.GlowColor or Color3.fromRGB(139,92,246),
 Selected=false,
 Index=nil,
 Parent=an.Parent,
@@ -9062,6 +9064,18 @@ NumberSequenceKeypoint.new(1.0,0.1),
 }
 }),
 }),
+ap.Glow and ah("ImageLabel",{
+Name="Glow",
+Image="rbxassetid://8992230677",
+ImageColor3=ap.GlowColor,
+ImageTransparency=1,
+ScaleType=Enum.ScaleType.Slice,
+SliceCenter=Rect.new(99,99,99,99),
+Size=UDim2.new(1,24,1,24),
+Position=UDim2.new(0,-12,0,-12),
+BackgroundTransparency=1,
+ZIndex=-1,
+})or nil,
 af.NewRoundFrame(ap.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
@@ -9453,6 +9467,9 @@ aj(aq.UIElements.Main.Frame.TextLabel,0.15,{TextTransparency=0.3}):Play()
 if aq.UIElements.Icon then
 aj(aq.UIElements.Icon.ImageLabel,0.15,{ImageTransparency=0.4}):Play()
 end
+if aq.Glow and aq.UIElements.Main:FindFirstChild("Glow") then
+aj(aq.UIElements.Main.Glow,0.15,{ImageTransparency=1}):Play()
+end
 aq.Selected=false
 end
 end
@@ -9461,6 +9478,9 @@ aj(am.Tabs[ao].UIElements.Main.Outline,0.15,{ImageTransparency=0.85}):Play()
 aj(am.Tabs[ao].UIElements.Main.Frame.TextLabel,0.15,{TextTransparency=0}):Play()
 if am.Tabs[ao].UIElements.Icon then
 aj(am.Tabs[ao].UIElements.Icon.ImageLabel,0.15,{ImageTransparency=0.1}):Play()
+end
+if am.Tabs[ao].Glow and am.Tabs[ao].UIElements.Main:FindFirstChild("Glow") then
+aj(am.Tabs[ao].UIElements.Main.Glow,0.3,{ImageTransparency=0.6}):Play()
 end
 am.Tabs[ao].Selected=true
 
