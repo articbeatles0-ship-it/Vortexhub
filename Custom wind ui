@@ -9130,8 +9130,8 @@ corner0.Parent=glowFrame
 for i=1,3 do
 local layer=Instance.new("Frame")
 layer.Name="GlowLayer"..i
-layer.Size=UDim2.new(1,i*6,1,i*6)
-layer.Position=UDim2.new(0,-i*3,0,-i*3)
+layer.Size=UDim2.new(1,i*8,1,i*8)
+layer.Position=UDim2.new(0,-i*4,0,-i*4)
 layer.BackgroundTransparency=1
 layer.ZIndex=ap.UIElements.Main.ZIndex
 layer.Parent=ap.UIElements.Main
@@ -9143,7 +9143,7 @@ ls.Transparency=1
 ls.ApplyStrokeMode=Enum.ApplyStrokeMode.Border
 ls.Parent=layer
 local lc=Instance.new("UICorner")
-lc.CornerRadius=UDim.new(0,ap.UICorner+i*2)
+lc.CornerRadius=UDim.new(0,ap.UICorner+i*3)
 lc.Parent=layer
 end
 end
