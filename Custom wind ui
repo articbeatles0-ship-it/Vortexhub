@@ -9022,7 +9022,7 @@ Elements={},
 ContainerFrame=nil,
 UICorner=Window.UICorner-(Window.UIPadding/2),
 Glow=an.Glow or false,
-GlowColor=an.GlowColor or Color3.fromRGB(255,50,50),
+GlowColor=an.GlowColor or Color3.fromRGB(100,60,200),
 Gap=Window.NewElements and 1 or 6,
 }
 
