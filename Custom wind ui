@@ -3681,7 +3681,6 @@ Title=af.Title or"Tag",
 Icon=af.Icon,
 Color=af.Color or Color3.fromHex"#315dff",
 Radius=af.Radius or 999,
-Invisible=af.Invisible or false,
 TagFrame=nil,
 Height=26,
 Padding=10,
@@ -3749,21 +3748,6 @@ VerticalAlignment="Center",
 Padding=UDim.new(0,ah.Padding/1.5)
 })
 })
-
--- Invisible = true: transparent fill, keep border via UIStroke
-if ah.Invisible then
-al.ImageTransparency=1
-local outlineColor=typeof(ah.Color)=="Color3"and ah.Color or Color3.fromHex"#315dff"
-aj.TextColor3=outlineColor
-if ai then ai.ImageLabel.ImageColor3=outlineColor end
-ac("UIStroke",{
-Color=outlineColor,
-Thickness=1.5,
-Transparency=0.3,
-ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
-Parent=al,
-})
-end
 
 
 function ah.SetTitle(am,an)
@@ -4706,7 +4690,7 @@ Color=af.Color,
 Scalable=af.Scalable,
 Parent=af.Parent,
 Justify=af.Justify or"Between",
-LockedTitle=(af.ParentConfig and af.ParentConfig.LockedTitle) or af.LockedTitle or"Locked",
+LockedTitle=af.LockedTitle or"Locked",
 UIPadding=af.Window.ElementConfig.UIPadding,
 UICorner=af.Window.ElementConfig.UICorner,
 UIElements={},
@@ -5186,8 +5170,14 @@ aC:Destroy()
 end
 
 
+function ag.SetLockedTitle(aE,aF)
+ag.LockedTitle=aF
+aq.Text=aF
+end
+
 function ag.Lock(aE)
 aj=false
+aq.Text=ag.LockedTitle
 as.Active=true
 as.Visible=true
 end
@@ -8578,7 +8568,7 @@ ae("TextLabel",{
 Size=UDim2.new(1,0,1,0),
 BackgroundTransparency=1,
 Text=al.LockedTitle,
-TextSize=20,
+TextSize=15,
 TextXAlignment="Center",
 TextYAlignment="Center",
 ZIndex=1000,
