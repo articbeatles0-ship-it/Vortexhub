@@ -3681,7 +3681,7 @@ Title=af.Title or"Tag",
 Icon=af.Icon,
 Color=af.Color or Color3.fromHex"#315dff",
 Radius=af.Radius or 999,
-
+Invisible=af.Invisible or false,
 TagFrame=nil,
 Height=26,
 Padding=10,
@@ -3749,6 +3749,21 @@ VerticalAlignment="Center",
 Padding=UDim.new(0,ah.Padding/1.5)
 })
 })
+
+-- Invisible = true: transparent fill, keep border outline only
+if ah.Invisible then
+al.ImageTransparency=1
+aj.TextColor3=typeof(ah.Color)=="Color3"and ah.Color or Color3.fromHex"#315dff"
+if ai then ai.ImageLabel.ImageColor3=typeof(ah.Color)=="Color3"and ah.Color or Color3.fromHex"#315dff" end
+ab.NewRoundFrame(ah.Radius,"Squircle-Outline",{
+AutomaticSize="X",
+Size=UDim2.new(1,0,1,0),
+ImageColor3=typeof(ah.Color)=="Color3"and ah.Color or Color3.fromHex"#315dff",
+ImageTransparency=0.5,
+Parent=al,
+ZIndex=al.ZIndex+1,
+})
+end
 
 
 function ah.SetTitle(am,an)
@@ -8347,6 +8362,7 @@ Box=ak.Box or false,
 FontWeight=ak.FontWeight or Enum.FontWeight.SemiBold,
 TextTransparency=ak.TextTransparency or 0.05,
 Opened=ak.Opened or false,
+Locked=ak.Locked or false,
 UIElements={},
 
 HeaderSize=hasDesc and 62 or 42,
@@ -8541,6 +8557,35 @@ an.Visible=true
 UpdateTitleSize()
 end
 end,aq,ak.UIScale,ak.Tab)
+
+-- Section Locked: overlay covers Content and blocks interaction
+if al.Locked then
+local lockOverlay=ae("Frame",{
+Size=UDim2.new(1,0,1,0),
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0.4,
+BorderSizePixel=0,
+ZIndex=999,
+Active=true,
+Parent=ap,
+},{
+ae("UICorner",{
+CornerRadius=UDim.new(0,ak.Window.ElementConfig.UICorner),
+}),
+ae("TextLabel",{
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+Text="🔒",
+TextSize=20,
+TextXAlignment="Center",
+TextYAlignment="Center",
+ZIndex=1000,
+}),
+})
+-- Block the expand button too
+ap.Top.Active=false
+ap.Top.AutoButtonColor=false
+end
 
 
 UpdateTitleSize()
