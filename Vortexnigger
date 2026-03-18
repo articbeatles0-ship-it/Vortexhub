@@ -5297,31 +5297,30 @@ local ah=a.load'z'(af)
 
 ag.ParagraphFrame=ah
 
--- Paragraph Glow: animated UIStroke on the element box
+-- Paragraph Glow: Squircle-Outline overlay that traces the exact squircle border
 if af.Glow and ah.UIElements and ah.UIElements.Main then
 local glowColor = typeof(af.Glow)=="Color3" and af.Glow or Color3.fromHex("#7c6aff")
-local glowThickness = typeof(af.GlowThickness)=="number" and af.GlowThickness or 2
 local glowPulse = af.GlowPulse ~= false
 
-local glowStroke = aa.New("UIStroke",{
-ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
-Color=glowColor,
-Thickness=glowThickness,
-Transparency=0.2,
+local glowFrame = aa.NewRoundFrame(af.Window.ElementConfig.UICorner,"Squircle-Outline",{
+Size=UDim2.new(1,0,1,0),
+ImageColor3=glowColor,
+ImageTransparency=0.15,
+ZIndex=ah.UIElements.Main.ZIndex+2,
 Parent=ah.UIElements.Main,
 })
 
 if glowPulse then
 local ts=(cloneref or clonereference or function(v)return v end)(game:GetService"TweenService")
 local function playGlowCycle()
-local t1=ts:Create(glowStroke,TweenInfo.new(1.1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Transparency=0.7})
-local t2=ts:Create(glowStroke,TweenInfo.new(1.1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Transparency=0.15})
+local t1=ts:Create(glowFrame,TweenInfo.new(1.1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=0.7})
+local t2=ts:Create(glowFrame,TweenInfo.new(1.1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=0.15})
 t1:Play()
 t1.Completed:Connect(function()
-if glowStroke and glowStroke.Parent then
+if glowFrame and glowFrame.Parent then
 t2:Play()
 t2.Completed:Connect(function()
-if glowStroke and glowStroke.Parent then
+if glowFrame and glowFrame.Parent then
 playGlowCycle()
 end
 end)
@@ -5331,13 +5330,13 @@ end
 task.spawn(playGlowCycle)
 end
 
-ag.GlowStroke = glowStroke
+ag.GlowFrame = glowFrame
 
 function ag.SetGlowColor(ai,aj)
-glowStroke.Color = aj
+glowFrame.ImageColor3 = aj
 end
 function ag.SetGlow(ai,aj)
-glowStroke.Enabled = aj
+glowFrame.Visible = aj
 end
 end
 
@@ -8631,31 +8630,30 @@ ap.Top.Active=false
 ap.Top.AutoButtonColor=false
 end
 
--- Section Glow: adds an animated UIStroke border glow effect
+-- Section Glow: Squircle-Outline overlay that traces the exact squircle border
 if ak.Glow then
 local glowColor = typeof(ak.Glow)=="Color3" and ak.Glow or Color3.fromHex("#7c6aff")
-local glowThickness = typeof(ak.GlowThickness)=="number" and ak.GlowThickness or 2
-local glowPulse = ak.GlowPulse ~= false -- default true
+local glowPulse = ak.GlowPulse ~= false
 
-local glowStroke = ae("UIStroke",{
-ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
-Color=glowColor,
-Thickness=glowThickness,
-Transparency=0.2,
+local glowFrame = aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle-Outline",{
+Size=UDim2.new(1,0,1,0),
+ImageColor3=glowColor,
+ImageTransparency=0.15,
+ZIndex=ap.ZIndex+2,
 Parent=ap,
 })
 
 if glowPulse then
 local ts=(cloneref or clonereference or function(v)return v end)(game:GetService"TweenService")
 local function playGlowCycle()
-local t1=ts:Create(glowStroke,TweenInfo.new(1.1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Transparency=0.7})
-local t2=ts:Create(glowStroke,TweenInfo.new(1.1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Transparency=0.15})
+local t1=ts:Create(glowFrame,TweenInfo.new(1.1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=0.7})
+local t2=ts:Create(glowFrame,TweenInfo.new(1.1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=0.15})
 t1:Play()
 t1.Completed:Connect(function()
-if glowStroke and glowStroke.Parent then
+if glowFrame and glowFrame.Parent then
 t2:Play()
 t2.Completed:Connect(function()
-if glowStroke and glowStroke.Parent then
+if glowFrame and glowFrame.Parent then
 playGlowCycle()
 end
 end)
@@ -8665,13 +8663,13 @@ end
 task.spawn(playGlowCycle)
 end
 
-al.UIElements.GlowStroke = glowStroke
+al.UIElements.GlowFrame = glowFrame
 
 function al.SetGlowColor(ar,as)
-glowStroke.Color = as
+glowFrame.ImageColor3 = as
 end
 function al.SetGlow(ar,as)
-glowStroke.Enabled = as
+glowFrame.Visible = as
 end
 end
 
