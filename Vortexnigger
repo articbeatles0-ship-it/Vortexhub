@@ -4446,42 +4446,30 @@ Scale=.9
 })
 
 local aj=ac("Frame",{
-AnchorPoint=Vector2.new(0.5,0),
+AnchorPoint=Vector2.new(0,0.5),
 AutomaticSize="XY",
 BackgroundTransparency=1,
 Parent=af,
-
 Visible=false
 },{
 ac("UISizeConstraint",{
 MaxSize=Vector2.new(400,math.huge)
 }),
-ac("Frame",{
-AutomaticSize="XY",
-BackgroundTransparency=1,
-LayoutOrder=99,
-Visible=false
-},{
+ac("UIListLayout",{
+Padding=UDim.new(0,0),
+FillDirection="Horizontal",
+VerticalAlignment="Center",
+HorizontalAlignment="Left",
+}),
 ac("ImageLabel",{
-Size=UDim2.new(0,ag.ToolTipSize,0,ag.ToolTipSize/2),
+Size=UDim2.new(0,ag.ToolTipSize/2,0,ag.ToolTipSize),
 BackgroundTransparency=1,
-Rotation=180,
+LayoutOrder=1,
 Image="rbxassetid://89524607682719",
+Rotation=270,
 ThemeTag={
 ImageColor3="Background",
 },
-},{
-ac("ImageLabel",{
-Size=UDim2.new(0,ag.ToolTipSize,0,ag.ToolTipSize/2),
-BackgroundTransparency=1,
-LayoutOrder=99,
-ImageTransparency=.9,
-Image="rbxassetid://89524607682719",
-ThemeTag={
-ImageColor3="Text",
-},
-}),
-}),
 }),
 ab.NewRoundFrame(14,"Squircle",{
 AutomaticSize="XY",
@@ -4490,14 +4478,9 @@ ImageColor3="Background",
 },
 ImageTransparency=1,
 Name="Background",
+LayoutOrder=2,
 },{
-
-
-
 ac("Frame",{
-ThemeTag={
-BackgroundColor3="Text",
-},
 AutomaticSize="XY",
 BackgroundTransparency=1,
 },{
@@ -4509,50 +4492,37 @@ Padding=UDim.new(0,12),
 FillDirection="Horizontal",
 VerticalAlignment="Center"
 }),
-
 ah,
 ac("UIPadding",{
-PaddingTop=UDim.new(0,12),
+PaddingTop=UDim.new(0,8),
 PaddingLeft=UDim.new(0,12),
 PaddingRight=UDim.new(0,12),
-PaddingBottom=UDim.new(0,12),
+PaddingBottom=UDim.new(0,8),
 }),
 })
 }),
 ai,
-ac("UIListLayout",{
-Padding=UDim.new(0,0),
-FillDirection="Vertical",
-VerticalAlignment="Center",
-HorizontalAlignment="Center",
-}),
 })
 ag.Container=aj
 ag.TitleFrame=ah
 
 function ag.Open(ak)
 aj.Visible=true
-
+aj.Background.ImageTransparency=1
+ah.TextTransparency=1
+ai.Scale=.9
 ad(aj.Background,.2,{ImageTransparency=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 ad(ah,.2,{TextTransparency=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 ad(ai,.18,{Scale=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
 
-function ag.Close(ak,al)
-
+function ag.Close(ak)
 ad(aj.Background,.3,{ImageTransparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 ad(ah,.3,{TextTransparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 ad(ai,.35,{Scale=.9},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
-
-if al~=false then
-task.wait(.35)
-aj.Visible=false
-aj:Destroy()
-else
 task.delay(.35,function()
 aj.Visible=false
 end)
-end
 end
 
 return ag
@@ -6084,8 +6054,8 @@ LayoutOrder=-1,
 local ax
 if aj.IsTooltip then
 ax=a.load'y'.New(FormatValue(an),aj.UIElements.SliderIcon.Frame.Thumb)
-ax.Container.AnchorPoint=Vector2.new(0.5,1)
-ax.Container.Position=UDim2.new(0.5,0,0,-8)
+ax.Container.AnchorPoint=Vector2.new(0,0.5)
+ax.Container.Position=UDim2.new(1,0,0.5,0)
 end
 
 function aj.Lock(as)
