@@ -5313,11 +5313,13 @@ Parent=mainFrame.Parent,
 })
 mainFrame.Parent = glowWrapper
 
+local t = glowThickness * 2
 local glowFrame = aa.NewRoundFrame(af.Window.ElementConfig.UICorner,"Squircle-Outline",{
-Size=UDim2.new(1,0,1,0),
+Size=UDim2.new(1,t,1,t),
+AnchorPoint=Vector2.new(0.5,0.5),
+Position=UDim2.new(0.5,0,0.5,0),
 ImageColor3=glowColor,
 ImageTransparency=0.15,
-SliceScale=glowThickness * (af.Window.ElementConfig.UICorner/256),
 ZIndex=mainFrame.ZIndex+1,
 Parent=glowWrapper,
 })
@@ -8658,11 +8660,13 @@ Parent=ak.Parent,
 })
 ap.Parent = glowWrapper
 
+local t = glowThickness * 2
 local glowFrame = aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle-Outline",{
-Size=UDim2.new(1,0,1,0),
+Size=UDim2.new(1,t,1,t),
+AnchorPoint=Vector2.new(0.5,0.5),
+Position=UDim2.new(0.5,0,0.5,0),
 ImageColor3=glowColor,
 ImageTransparency=0.15,
-SliceScale=glowThickness * (ak.Window.ElementConfig.UICorner/256),
 ZIndex=ap.ZIndex+1,
 Parent=glowWrapper,
 })
