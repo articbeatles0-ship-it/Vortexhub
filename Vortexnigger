@@ -5312,15 +5312,34 @@ local ah=a.load'z'(af)
 ag.ParagraphFrame=ah
 
 if ag.Glow and ah.UIElements and ah.UIElements.Main then
-local paraGlowStroke=ab("UIStroke",{
+local mainFrame=ah.UIElements.Main
+local paraGlowOverlay=ab("Frame",{
+BackgroundTransparency=1,
+Size=UDim2.new(0,mainFrame.AbsoluteSize.X,0,mainFrame.AbsoluteSize.Y),
+Position=UDim2.new(0,mainFrame.AbsolutePosition.X - af.Parent.AbsolutePosition.X,0,mainFrame.AbsolutePosition.Y - af.Parent.AbsolutePosition.Y),
+ZIndex=mainFrame.ZIndex+10,
+Parent=af.Parent,
+},{
+ab("UICorner",{
+CornerRadius=UDim.new(0,af.Window and af.Window.ElementConfig and af.Window.ElementConfig.UICorner or 12),
+}),
+ab("UIStroke",{
 Color=ag.GlowColor,
 Thickness=1.5,
 Transparency=0.2,
 ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
-Parent=ah.UIElements.Main,
+}),
 })
 ag.UIElements=ag.UIElements or{}
-ag.UIElements.GlowStroke=paraGlowStroke
+ag.UIElements.GlowOverlay=paraGlowOverlay
+ag.UIElements.GlowStroke=paraGlowOverlay:FindFirstChildOfClass("UIStroke")
+
+aa.AddSignal(mainFrame:GetPropertyChangedSignal"AbsoluteSize",function()
+paraGlowOverlay.Size=UDim2.new(0,mainFrame.AbsoluteSize.X,0,mainFrame.AbsoluteSize.Y)
+end)
+aa.AddSignal(mainFrame:GetPropertyChangedSignal"AbsolutePosition",function()
+paraGlowOverlay.Position=UDim2.new(0,mainFrame.AbsolutePosition.X - af.Parent.AbsolutePosition.X,0,mainFrame.AbsolutePosition.Y - af.Parent.AbsolutePosition.Y)
+end)
 
 if ag.GlowPulse then
 task.spawn(function()
@@ -8601,15 +8620,32 @@ VerticalAlignment="Top",
 
 
 if al.Glow then
-ap.ClipsDescendants=false
-local sectionGlowStroke=ae("UIStroke",{
+local sectionGlowOverlay=ae("Frame",{
+BackgroundTransparency=1,
+Size=UDim2.new(0,ap.AbsoluteSize.X,0,ap.AbsoluteSize.Y),
+Position=UDim2.new(0,ap.AbsolutePosition.X - ak.Parent.AbsolutePosition.X,0,ap.AbsolutePosition.Y - ak.Parent.AbsolutePosition.Y),
+ZIndex=ap.ZIndex+10,
+Parent=ak.Parent,
+},{
+ae("UICorner",{
+CornerRadius=UDim.new(0,ak.Window.ElementConfig.UICorner),
+}),
+ae("UIStroke",{
 Color=al.GlowColor,
 Thickness=1.5,
 Transparency=0.2,
 ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
-Parent=ap,
+}),
 })
-al.UIElements.GlowStroke=sectionGlowStroke
+al.UIElements.GlowOverlay=sectionGlowOverlay
+al.UIElements.GlowStroke=sectionGlowOverlay:FindFirstChildOfClass("UIStroke")
+
+aa.AddSignal(ap:GetPropertyChangedSignal"AbsoluteSize",function()
+sectionGlowOverlay.Size=UDim2.new(0,ap.AbsoluteSize.X,0,ap.AbsoluteSize.Y)
+end)
+aa.AddSignal(ap:GetPropertyChangedSignal"AbsolutePosition",function()
+sectionGlowOverlay.Position=UDim2.new(0,ap.AbsolutePosition.X - ak.Parent.AbsolutePosition.X,0,ap.AbsolutePosition.Y - ak.Parent.AbsolutePosition.Y)
+end)
 
 if al.GlowPulse then
 task.spawn(function()
