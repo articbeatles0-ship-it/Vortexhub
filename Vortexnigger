@@ -4447,8 +4447,8 @@ ImageColor3="Background",
 },
 ImageTransparency=1,
 Name="Background",
-AnchorPoint=Vector2.new(0,0.5),
-Position=UDim2.new(1,6,0.5,0),
+AnchorPoint=Vector2.new(0.5,1),
+Position=UDim2.new(0.5,0,0,-6),
 Parent=af,
 Visible=false,
 },{
@@ -8594,31 +8594,47 @@ UpdateTitleSize()
 end
 end,aq,ak.UIScale,ak.Tab)
 
--- Section Locked: overlay covers Content and blocks interaction
+-- Section Locked: overlay with lock icon matching element lock style
 if al.Locked then
-local lockOverlay=ae("Frame",{
+local lockIcon=aa.Image(
+"lock",
+"lock",
+0,
+ak.Window.Folder,
+"Lock",
+false
+)
+lockIcon.Size=UDim2.new(0,20,0,20)
+lockIcon.ImageLabel.ImageColor3=Color3.new(1,1,1)
+lockIcon.ImageLabel.ImageTransparency=.4
+
+local lockLabel=ae("TextLabel",{
+Text=al.LockedTitle,
+TextSize=18,
+FontFace=Font.new(aa.Font,Enum.FontWeight.Medium),
+AutomaticSize="XY",
+BackgroundTransparency=1,
+TextColor3=Color3.new(1,1,1),
+TextTransparency=.05,
+})
+
+aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
 Size=UDim2.new(1,0,1,0),
-BackgroundColor3=Color3.new(0,0,0),
-BackgroundTransparency=0.4,
-BorderSizePixel=0,
-ZIndex=999,
+ImageTransparency=.25,
+ImageColor3=Color3.new(0,0,0),
 Active=true,
+ZIndex=999,
 Parent=ap,
 },{
-ae("UICorner",{
-CornerRadius=UDim.new(0,ak.Window.ElementConfig.UICorner),
+ae("UIListLayout",{
+FillDirection="Horizontal",
+VerticalAlignment="Center",
+HorizontalAlignment="Center",
+Padding=UDim.new(0,8),
 }),
-ae("TextLabel",{
-Size=UDim2.new(1,0,1,0),
-BackgroundTransparency=1,
-Text=al.LockedTitle,
-TextSize=12,
-TextXAlignment="Center",
-TextYAlignment="Center",
-ZIndex=1000,
-}),
+lockIcon,
+lockLabel,
 })
--- Block the expand button too
 ap.Top.Active=false
 ap.Top.AutoButtonColor=false
 end
@@ -11806,7 +11822,8 @@ Parent=F.UIElements.Main
 ak("UIListLayout",{
 FillDirection="Horizontal",
 Padding=UDim.new(0,F.UIPadding),
-VerticalAlignment="Center"
+VerticalAlignment="Center",
+HorizontalAlignment="Center",
 }),
 ak("UIPadding",{
 PaddingTop=UDim.new(0,C.TextPadding/2),
@@ -11848,7 +11865,7 @@ F.UIElements.Title=ak("TextLabel",{
 Text=C.Title,
 TextSize=20,
 FontFace=Font.new(aj.Font,Enum.FontWeight.SemiBold),
-TextXAlignment="Left",
+TextXAlignment="Center",
 TextWrapped=true,
 RichText=true,
 Size=UDim2.new(1,H and-26-F.UIPadding or 0,0,0),
