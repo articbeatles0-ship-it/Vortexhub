@@ -5297,17 +5297,27 @@ local ah=a.load'z'(af)
 
 ag.ParagraphFrame=ah
 
--- Paragraph Glow: Squircle-Outline overlay that traces the exact squircle border
+-- Paragraph Glow: re-parent main frame into a wrapper so outline sits as a sibling
 if af.Glow and ah.UIElements and ah.UIElements.Main then
 local glowColor = typeof(af.Glow)=="Color3" and af.Glow or Color3.fromHex("#7c6aff")
 local glowPulse = af.GlowPulse ~= false
+
+local mainFrame = ah.UIElements.Main
+
+local glowWrapper = ab("Frame",{
+Size=UDim2.new(1,0,0,0),
+AutomaticSize="Y",
+BackgroundTransparency=1,
+Parent=mainFrame.Parent,
+})
+mainFrame.Parent = glowWrapper
 
 local glowFrame = aa.NewRoundFrame(af.Window.ElementConfig.UICorner,"Squircle-Outline",{
 Size=UDim2.new(1,0,1,0),
 ImageColor3=glowColor,
 ImageTransparency=0.15,
-ZIndex=ah.UIElements.Main.ZIndex+2,
-Parent=ah.UIElements.Main,
+ZIndex=mainFrame.ZIndex+1,
+Parent=glowWrapper,
 })
 
 if glowPulse then
@@ -5331,6 +5341,7 @@ task.spawn(playGlowCycle)
 end
 
 ag.GlowFrame = glowFrame
+ag.GlowWrapper = glowWrapper
 
 function ag.SetGlowColor(ai,aj)
 glowFrame.ImageColor3 = aj
@@ -8630,17 +8641,26 @@ ap.Top.Active=false
 ap.Top.AutoButtonColor=false
 end
 
--- Section Glow: Squircle-Outline overlay that traces the exact squircle border
+-- Section Glow: re-parent ap into a wrapper so the outline sits as a sibling overlay
 if ak.Glow then
 local glowColor = typeof(ak.Glow)=="Color3" and ak.Glow or Color3.fromHex("#7c6aff")
 local glowPulse = ak.GlowPulse ~= false
+
+-- wrapper takes ap's place in the parent, ap moves inside it
+local glowWrapper = ae("Frame",{
+Size=UDim2.new(1,0,0,0),
+AutomaticSize="Y",
+BackgroundTransparency=1,
+Parent=ak.Parent,
+})
+ap.Parent = glowWrapper
 
 local glowFrame = aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle-Outline",{
 Size=UDim2.new(1,0,1,0),
 ImageColor3=glowColor,
 ImageTransparency=0.15,
-ZIndex=ap.ZIndex+2,
-Parent=ap,
+ZIndex=ap.ZIndex+1,
+Parent=glowWrapper,
 })
 
 if glowPulse then
@@ -8664,6 +8684,7 @@ task.spawn(playGlowCycle)
 end
 
 al.UIElements.GlowFrame = glowFrame
+al.UIElements.GlowWrapper = glowWrapper
 
 function al.SetGlowColor(ar,as)
 glowFrame.ImageColor3 = as
