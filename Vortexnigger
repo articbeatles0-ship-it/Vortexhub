@@ -5313,11 +5313,20 @@ ag.ParagraphFrame=ah
 
 if ag.Glow and ah.UIElements and ah.UIElements.Main then
 local mainFrame=ah.UIElements.Main
+local paraHolder=ab("Frame",{
+Size=UDim2.new(1,0,0,0),
+AutomaticSize="Y",
+BackgroundTransparency=1,
+Parent=mainFrame.Parent,
+})
+mainFrame.Parent=paraHolder
+
 local paraGlowOverlay=ab("Frame",{
 BackgroundTransparency=1,
-Size=UDim2.new(0,0,0,0),
+Size=UDim2.new(1,0,1,0),
+Position=UDim2.new(0,0,0,0),
 ZIndex=mainFrame.ZIndex+10,
-Parent=af.Parent,
+Parent=paraHolder,
 },{
 ab("UICorner",{
 CornerRadius=UDim.new(0,af.Window and af.Window.ElementConfig and af.Window.ElementConfig.UICorner or 12),
@@ -5332,16 +5341,6 @@ ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
 ag.UIElements=ag.UIElements or{}
 ag.UIElements.GlowOverlay=paraGlowOverlay
 ag.UIElements.GlowStroke=paraGlowOverlay:FindFirstChildOfClass("UIStroke")
-
-local function updateParaGlowOverlay()
-paraGlowOverlay.Size=UDim2.new(0,mainFrame.AbsoluteSize.X,0,mainFrame.AbsoluteSize.Y)
-paraGlowOverlay.Position=UDim2.new(0,mainFrame.AbsolutePosition.X-af.Parent.AbsolutePosition.X,0,mainFrame.AbsolutePosition.Y-af.Parent.AbsolutePosition.Y)
-end
-
-task.defer(updateParaGlowOverlay)
-
-aa.AddSignal(mainFrame:GetPropertyChangedSignal"AbsoluteSize",updateParaGlowOverlay)
-aa.AddSignal(mainFrame:GetPropertyChangedSignal"AbsolutePosition",updateParaGlowOverlay)
 
 if ag.GlowPulse then
 task.spawn(function()
@@ -8563,7 +8562,6 @@ end
 local ap=aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 BackgroundTransparency=1,
-Parent=ak.Parent,
 ClipsDescendants=true,
 AutomaticSize="Y",
 ImageTransparency=(al.Box or hasDesc) and.93 or 1,
@@ -8621,12 +8619,21 @@ VerticalAlignment="Top",
 
 
 
+local apHolder=ae("Frame",{
+Size=UDim2.new(1,0,0,0),
+AutomaticSize="Y",
+BackgroundTransparency=1,
+Parent=ak.Parent,
+})
+ap.Parent=apHolder
+
 if al.Glow then
 local sectionGlowOverlay=ae("Frame",{
 BackgroundTransparency=1,
-Size=UDim2.new(1,0,0,0),
+Size=UDim2.new(1,0,1,0),
+Position=UDim2.new(0,0,0,0),
 ZIndex=ap.ZIndex+10,
-Parent=ak.Parent,
+Parent=apHolder,
 },{
 ae("UICorner",{
 CornerRadius=UDim.new(0,ak.Window.ElementConfig.UICorner),
@@ -8640,16 +8647,6 @@ ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
 })
 al.UIElements.GlowOverlay=sectionGlowOverlay
 al.UIElements.GlowStroke=sectionGlowOverlay:FindFirstChildOfClass("UIStroke")
-
-local function updateGlowOverlay()
-sectionGlowOverlay.Size=UDim2.new(0,ap.AbsoluteSize.X,0,ap.AbsoluteSize.Y)
-sectionGlowOverlay.Position=UDim2.new(0,ap.AbsolutePosition.X-ak.Parent.AbsolutePosition.X,0,ap.AbsolutePosition.Y-ak.Parent.AbsolutePosition.Y)
-end
-
-task.defer(updateGlowOverlay)
-
-aa.AddSignal(ap:GetPropertyChangedSignal"AbsoluteSize",updateGlowOverlay)
-aa.AddSignal(ap:GetPropertyChangedSignal"AbsolutePosition",updateGlowOverlay)
 
 if al.GlowPulse then
 task.spawn(function()
