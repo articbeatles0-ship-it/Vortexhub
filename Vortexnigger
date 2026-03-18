@@ -4468,7 +4468,7 @@ BackgroundTransparency=1,
 Rotation=180,
 Image="rbxassetid://89524607682719",
 ThemeTag={
-ImageColor3="Accent",
+ImageColor3="Background",
 },
 },{
 ac("ImageLabel",{
@@ -4486,7 +4486,7 @@ ImageColor3="Text",
 ab.NewRoundFrame(14,"Squircle",{
 AutomaticSize="XY",
 ThemeTag={
-ImageColor3="Accent",
+ImageColor3="Background",
 },
 ImageTransparency=1,
 Name="Background",
@@ -4528,26 +4528,31 @@ HorizontalAlignment="Center",
 }),
 })
 ag.Container=aj
+ag.TitleFrame=ah
 
 function ag.Open(ak)
 aj.Visible=true
-
 
 ad(aj.Background,.2,{ImageTransparency=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 ad(ah,.2,{TextTransparency=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 ad(ai,.18,{Scale=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
 
-function ag.Close(ak)
+function ag.Close(ak,al)
 
 ad(aj.Background,.3,{ImageTransparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 ad(ah,.3,{TextTransparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 ad(ai,.35,{Scale=.9},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 
+if al~=false then
 task.wait(.35)
-
 aj.Visible=false
 aj:Destroy()
+else
+task.delay(.35,function()
+aj.Visible=false
+end)
+end
 end
 
 return ag
@@ -5972,6 +5977,7 @@ Step=ai.Step or 1,
 Callback=ai.Callback or function()end,
 UIElements={},
 IsFocusing=false,
+IsTooltip=ai.IsTooltip or false,
 
 Width=130,
 TextBoxWidth=30,
@@ -6075,6 +6081,13 @@ LayoutOrder=-1,
 })
 })
 
+local ax
+if aj.IsTooltip then
+ax=a.load'y'.New(FormatValue(an),aj.UIElements.SliderIcon.Frame.Thumb)
+ax.Container.AnchorPoint=Vector2.new(0.5,1)
+ax.Container.Position=UDim2.new(0.5,0,0,-8)
+end
+
 function aj.Lock(as)
 aj.Locked=true
 aq=false
@@ -6104,6 +6117,7 @@ au=CalculateValue(aj.Value.Min+aw*(aj.Value.Max-aj.Value.Min))
 if au~=ao then
 ad(aj.UIElements.SliderIcon.Frame,0.05,{Size=UDim2.new(aw,0,1,0)}):Play()
 aj.UIElements.SliderContainer.TextBox.Text=FormatValue(au)
+if ax then ax.TitleFrame.Text=FormatValue(au)end
 aj.Value.Default=FormatValue(au)
 ao=au
 aa.SafeCallback(aj.Callback,FormatValue(au))
@@ -6114,28 +6128,31 @@ ak=(av.UserInputType==Enum.UserInputType.Touch)
 as.ScrollingEnabled=false
 ag=true
 al=ae(game:GetService"RunService").RenderStepped:Connect(function()
-local ax=ak and av.Position.X or ae(game:GetService"UserInputService"):GetMouseLocation().X
-local ay=math.clamp((ax-aj.UIElements.SliderIcon.AbsolutePosition.X)/aj.UIElements.SliderIcon.AbsoluteSize.X,0,1)
+local ax2=ak and av.Position.X or ae(game:GetService"UserInputService"):GetMouseLocation().X
+local ay=math.clamp((ax2-aj.UIElements.SliderIcon.AbsolutePosition.X)/aj.UIElements.SliderIcon.AbsoluteSize.X,0,1)
 au=CalculateValue(aj.Value.Min+ay*(aj.Value.Max-aj.Value.Min))
 
 if au~=ao then
 ad(aj.UIElements.SliderIcon.Frame,0.05,{Size=UDim2.new(ay,0,1,0)}):Play()
 aj.UIElements.SliderContainer.TextBox.Text=FormatValue(au)
+if ax then ax.TitleFrame.Text=FormatValue(au)end
 aj.Value.Default=FormatValue(au)
 ao=au
 aa.SafeCallback(aj.Callback,FormatValue(au))
 end
 end)
-am=ae(game:GetService"UserInputService").InputEnded:Connect(function(ax)
-if(ax.UserInputType==Enum.UserInputType.MouseButton1 or ax.UserInputType==Enum.UserInputType.Touch)and av==ax then
+am=ae(game:GetService"UserInputService").InputEnded:Connect(function(ax2)
+if(ax2.UserInputType==Enum.UserInputType.MouseButton1 or ax2.UserInputType==Enum.UserInputType.Touch)and av==ax2 then
 al:Disconnect()
 am:Disconnect()
 ag=false
 as.ScrollingEnabled=true
 
 ad(aj.UIElements.SliderIcon.Frame.Thumb,.2,{Size=UDim2.new(0,ai.Window.NewElements and(aj.ThumbSize*1.75)or(aj.ThumbSize+2),0,aj.ThumbSize+2)},Enum.EasingStyle.Quint,Enum.EasingDirection.InOut):Play()
+if ax then ax:Close()end
 end
 end)
+if ax then ax:Open()end
 end
 end
 end
