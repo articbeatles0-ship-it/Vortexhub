@@ -5296,57 +5296,6 @@ Locked=af.Locked or false,
 local ah=a.load'z'(af)
 
 ag.ParagraphFrame=ah
-
--- Paragraph Glow: colored squircle inside mainFrame, tinted through the semi-transparent background
-if af.Glow and ah.UIElements and ah.UIElements.Main then
-local glowColor = typeof(af.Glow)=="Color3" and af.Glow or Color3.fromHex("#7c6aff")
-local glowPulse = af.GlowPulse ~= false
-local glowThickness = typeof(af.GlowThickness)=="number" and af.GlowThickness or 0.6
-local glowSpeed = typeof(af.GlowSpeed)=="number" and af.GlowSpeed or 1.1
-
-local mainFrame = ah.UIElements.Main
-
--- Glow sits inside mainFrame filling it entirely; shows through the semi-transparent element bg
-local glowFrame = aa.NewRoundFrame(af.Window.ElementConfig.UICorner,"Squircle",{
-Size=UDim2.new(1,0,1,0),
-ImageColor3=glowColor,
-ImageTransparency=1-glowThickness,
-ZIndex=mainFrame.ZIndex,
-Parent=mainFrame,
-})
-
-if glowPulse then
-local ts=(cloneref or clonereference or function(v)return v end)(game:GetService"TweenService")
-local minT = 1-glowThickness
-local maxT = math.min(minT+0.5, 0.98)
-local function playGlowCycle()
-local t1=ts:Create(glowFrame,TweenInfo.new(glowSpeed,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=maxT})
-local t2=ts:Create(glowFrame,TweenInfo.new(glowSpeed,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=minT})
-t1:Play()
-t1.Completed:Connect(function()
-if glowFrame and glowFrame.Parent then
-t2:Play()
-t2.Completed:Connect(function()
-if glowFrame and glowFrame.Parent then
-playGlowCycle()
-end
-end)
-end
-end)
-end
-task.spawn(playGlowCycle)
-end
-
-ag.GlowFrame = glowFrame
-
-function ag.SetGlowColor(ai,aj)
-glowFrame.ImageColor3 = aj
-end
-function ag.SetGlow(ai,aj)
-glowFrame.Visible = aj
-end
-end
-
 if af.Buttons and#af.Buttons>0 then
 local ai=ab("Frame",{
 Size=UDim2.new(1,0,0,38),
@@ -8422,7 +8371,21 @@ Padding=10,
 Elements={},
 
 Expandable=false,
+
+Glow=ak.Glow or false,
+GlowColor=ak.Glow or false,
+GlowPulse=ak.GlowPulse or false,
 }
+
+if al.Glow==true then
+al.GlowColor=ak.GlowColor or Color3.fromRGB(100,60,200)
+elseif typeof(al.Glow)=="Color3" then
+al.GlowColor=al.Glow
+al.Glow=true
+else
+al.Glow=false
+al.GlowColor=Color3.fromRGB(100,60,200)
+end
 
 local am
 
@@ -8598,6 +8561,31 @@ VerticalAlignment="Top",
 
 
 
+if al.Glow then
+ap.ClipsDescendants=false
+local sectionGlowStroke=ae("UIStroke",{
+Color=al.GlowColor,
+Thickness=1.5,
+Transparency=0.2,
+ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
+Parent=ap,
+})
+al.UIElements.GlowStroke=sectionGlowStroke
+
+if al.GlowPulse then
+task.spawn(function()
+local glowStroke=al.UIElements.GlowStroke
+while glowStroke and glowStroke.Parent do
+af(glowStroke,1.2,{Transparency=0.7},Enum.EasingStyle.Sine,Enum.EasingDirection.InOut):Play()
+task.wait(1.2)
+if not(glowStroke and glowStroke.Parent)then break end
+af(glowStroke,1.2,{Transparency=0.2},Enum.EasingStyle.Sine,Enum.EasingDirection.InOut):Play()
+task.wait(1.2)
+end
+end)
+end
+end
+
 local aq=ak.ElementsModule
 
 aq.Load(al,ap.Content,aq.Elements,ak.Window,ak.WindUI,function()
@@ -8635,54 +8623,6 @@ ZIndex=1000,
 -- Block the expand button too
 ap.Top.Active=false
 ap.Top.AutoButtonColor=false
-end
-
--- Section Glow: colored squircle inside ap, tinted through the semi-transparent background
-if ak.Glow then
-local glowColor = typeof(ak.Glow)=="Color3" and ak.Glow or Color3.fromHex("#7c6aff")
-local glowPulse = ak.GlowPulse ~= false
-local glowThickness = typeof(ak.GlowThickness)=="number" and ak.GlowThickness or 0.6
-local glowSpeed = typeof(ak.GlowSpeed)=="number" and ak.GlowSpeed or 1.1
-
--- Glow sits inside ap filling it entirely; shows through the semi-transparent section bg
-local glowFrame = aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
-Size=UDim2.new(1,0,1,0),
-ImageColor3=glowColor,
-ImageTransparency=1-glowThickness,
-ZIndex=ap.ZIndex,
-Parent=ap,
-})
-
-if glowPulse then
-local ts=(cloneref or clonereference or function(v)return v end)(game:GetService"TweenService")
-local minT = 1-glowThickness
-local maxT = math.min(minT+0.5, 0.98)
-local function playGlowCycle()
-local t1=ts:Create(glowFrame,TweenInfo.new(glowSpeed,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=maxT})
-local t2=ts:Create(glowFrame,TweenInfo.new(glowSpeed,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=minT})
-t1:Play()
-t1.Completed:Connect(function()
-if glowFrame and glowFrame.Parent then
-t2:Play()
-t2.Completed:Connect(function()
-if glowFrame and glowFrame.Parent then
-playGlowCycle()
-end
-end)
-end
-end)
-end
-task.spawn(playGlowCycle)
-end
-
-al.UIElements.GlowFrame = glowFrame
-
-function al.SetGlowColor(ar,as)
-glowFrame.ImageColor3 = as
-end
-function al.SetGlow(ar,as)
-glowFrame.Visible = as
-end
 end
 
 
