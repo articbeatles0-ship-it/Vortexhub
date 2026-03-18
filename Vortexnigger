@@ -5311,18 +5311,21 @@ AutomaticSize="Y",
 BackgroundTransparency=1,
 Parent=mainFrame.Parent,
 })
-mainFrame.Parent = glowWrapper
 
+-- Filled Squircle slightly larger, parented first so it renders behind mainFrame
 local t = glowThickness * 2
-local glowFrame = aa.NewRoundFrame(af.Window.ElementConfig.UICorner,"Squircle-Outline",{
+local glowFrame = aa.NewRoundFrame(af.Window.ElementConfig.UICorner,"Squircle",{
 Size=UDim2.new(1,t,1,t),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.5,0),
 ImageColor3=glowColor,
 ImageTransparency=0.15,
-ZIndex=mainFrame.ZIndex+1,
+ZIndex=1,
 Parent=glowWrapper,
 })
+
+mainFrame.Parent = glowWrapper
+mainFrame.ZIndex = 2
 
 if glowPulse then
 local ts=(cloneref or clonereference or function(v)return v end)(game:GetService"TweenService")
@@ -8658,18 +8661,21 @@ AutomaticSize="Y",
 BackgroundTransparency=1,
 Parent=ak.Parent,
 })
-ap.Parent = glowWrapper
 
+-- Filled Squircle slightly larger, parented first so it renders behind ap
 local t = glowThickness * 2
-local glowFrame = aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle-Outline",{
+local glowFrame = aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
 Size=UDim2.new(1,t,1,t),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.5,0),
 ImageColor3=glowColor,
 ImageTransparency=0.15,
-ZIndex=ap.ZIndex+1,
+ZIndex=1,
 Parent=glowWrapper,
 })
+
+ap.Parent = glowWrapper
+ap.ZIndex = 2
 
 if glowPulse then
 local ts=(cloneref or clonereference or function(v)return v end)(game:GetService"TweenService")
