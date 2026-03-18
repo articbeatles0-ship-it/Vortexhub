@@ -8562,6 +8562,7 @@ end
 local ap=aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 BackgroundTransparency=1,
+Parent=ak.Parent,
 ClipsDescendants=true,
 AutomaticSize="Y",
 ImageTransparency=(al.Box or hasDesc) and.93 or 1,
@@ -8619,43 +8620,24 @@ VerticalAlignment="Top",
 
 
 
-local apHolder=ae("Frame",{
-Size=UDim2.new(1,0,0,0),
-AutomaticSize="Y",
-BackgroundTransparency=1,
-Parent=ak.Parent,
-})
-ap.Parent=apHolder
-
 if al.Glow then
-local sectionGlowOverlay=ae("Frame",{
-BackgroundTransparency=1,
+local sectionGlowOutline=aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"SquircleOutline",{
 Size=UDim2.new(1,0,1,0),
-Position=UDim2.new(0,0,0,0),
-ZIndex=ap.ZIndex+10,
-Parent=apHolder,
-},{
-ae("UICorner",{
-CornerRadius=UDim.new(0,ak.Window.ElementConfig.UICorner),
-}),
-ae("UIStroke",{
-Color=al.GlowColor,
-Thickness=1.5,
-Transparency=0.2,
-ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
-}),
+ImageColor3=al.GlowColor,
+ImageTransparency=0.2,
+Name="GlowOutline",
+Parent=ap,
 })
-al.UIElements.GlowOverlay=sectionGlowOverlay
-al.UIElements.GlowStroke=sectionGlowOverlay:FindFirstChildOfClass("UIStroke")
+al.UIElements.GlowOutline=sectionGlowOutline
 
 if al.GlowPulse then
 task.spawn(function()
-local glowStroke=al.UIElements.GlowStroke
-while glowStroke and glowStroke.Parent do
-af(glowStroke,1.2,{Transparency=0.7},Enum.EasingStyle.Sine,Enum.EasingDirection.InOut):Play()
+local glowOutline=al.UIElements.GlowOutline
+while glowOutline and glowOutline.Parent do
+af(glowOutline,1.2,{ImageTransparency=0.7},Enum.EasingStyle.Sine,Enum.EasingDirection.InOut):Play()
 task.wait(1.2)
-if not(glowStroke and glowStroke.Parent)then break end
-af(glowStroke,1.2,{Transparency=0.2},Enum.EasingStyle.Sine,Enum.EasingDirection.InOut):Play()
+if not(glowOutline and glowOutline.Parent)then break end
+af(glowOutline,1.2,{ImageTransparency=0.2},Enum.EasingStyle.Sine,Enum.EasingDirection.InOut):Play()
 task.wait(1.2)
 end
 end)
