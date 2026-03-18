@@ -5297,41 +5297,31 @@ local ah=a.load'z'(af)
 
 ag.ParagraphFrame=ah
 
--- Paragraph Glow: re-parent main frame into a wrapper so outline sits as a sibling
+-- Paragraph Glow: colored squircle inside mainFrame, tinted through the semi-transparent background
 if af.Glow and ah.UIElements and ah.UIElements.Main then
 local glowColor = typeof(af.Glow)=="Color3" and af.Glow or Color3.fromHex("#7c6aff")
 local glowPulse = af.GlowPulse ~= false
-local glowThickness = typeof(af.GlowThickness)=="number" and af.GlowThickness or 1
+local glowThickness = typeof(af.GlowThickness)=="number" and af.GlowThickness or 0.6
+local glowSpeed = typeof(af.GlowSpeed)=="number" and af.GlowSpeed or 1.1
 
 local mainFrame = ah.UIElements.Main
 
-local glowWrapper = ab("Frame",{
-Size=UDim2.new(1,0,0,0),
-AutomaticSize="Y",
-BackgroundTransparency=1,
-Parent=mainFrame.Parent,
-})
-
--- Filled Squircle slightly larger, parented first so it renders behind mainFrame
-local t = glowThickness * 2
+-- Glow sits inside mainFrame filling it entirely; shows through the semi-transparent element bg
 local glowFrame = aa.NewRoundFrame(af.Window.ElementConfig.UICorner,"Squircle",{
-Size=UDim2.new(1,t,1,t),
-AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.new(0.5,0,0.5,0),
+Size=UDim2.new(1,0,1,0),
 ImageColor3=glowColor,
-ImageTransparency=0.15,
-ZIndex=1,
-Parent=glowWrapper,
+ImageTransparency=1-glowThickness,
+ZIndex=mainFrame.ZIndex,
+Parent=mainFrame,
 })
-
-mainFrame.Parent = glowWrapper
-mainFrame.ZIndex = 2
 
 if glowPulse then
 local ts=(cloneref or clonereference or function(v)return v end)(game:GetService"TweenService")
+local minT = 1-glowThickness
+local maxT = math.min(minT+0.5, 0.98)
 local function playGlowCycle()
-local t1=ts:Create(glowFrame,TweenInfo.new(1.1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=0.7})
-local t2=ts:Create(glowFrame,TweenInfo.new(1.1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=0.15})
+local t1=ts:Create(glowFrame,TweenInfo.new(glowSpeed,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=maxT})
+local t2=ts:Create(glowFrame,TweenInfo.new(glowSpeed,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=minT})
 t1:Play()
 t1.Completed:Connect(function()
 if glowFrame and glowFrame.Parent then
@@ -5348,7 +5338,6 @@ task.spawn(playGlowCycle)
 end
 
 ag.GlowFrame = glowFrame
-ag.GlowWrapper = glowWrapper
 
 function ag.SetGlowColor(ai,aj)
 glowFrame.ImageColor3 = aj
@@ -8648,40 +8637,29 @@ ap.Top.Active=false
 ap.Top.AutoButtonColor=false
 end
 
--- Section Glow: re-parent ap into a wrapper so the outline sits as a sibling overlay
+-- Section Glow: colored squircle inside ap, tinted through the semi-transparent background
 if ak.Glow then
 local glowColor = typeof(ak.Glow)=="Color3" and ak.Glow or Color3.fromHex("#7c6aff")
 local glowPulse = ak.GlowPulse ~= false
-local glowThickness = typeof(ak.GlowThickness)=="number" and ak.GlowThickness or 1
+local glowThickness = typeof(ak.GlowThickness)=="number" and ak.GlowThickness or 0.6
+local glowSpeed = typeof(ak.GlowSpeed)=="number" and ak.GlowSpeed or 1.1
 
--- wrapper takes ap's place in the parent, ap moves inside it
-local glowWrapper = ae("Frame",{
-Size=UDim2.new(1,0,0,0),
-AutomaticSize="Y",
-BackgroundTransparency=1,
-Parent=ak.Parent,
-})
-
--- Filled Squircle slightly larger, parented first so it renders behind ap
-local t = glowThickness * 2
+-- Glow sits inside ap filling it entirely; shows through the semi-transparent section bg
 local glowFrame = aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
-Size=UDim2.new(1,t,1,t),
-AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.new(0.5,0,0.5,0),
+Size=UDim2.new(1,0,1,0),
 ImageColor3=glowColor,
-ImageTransparency=0.15,
-ZIndex=1,
-Parent=glowWrapper,
+ImageTransparency=1-glowThickness,
+ZIndex=ap.ZIndex,
+Parent=ap,
 })
-
-ap.Parent = glowWrapper
-ap.ZIndex = 2
 
 if glowPulse then
 local ts=(cloneref or clonereference or function(v)return v end)(game:GetService"TweenService")
+local minT = 1-glowThickness
+local maxT = math.min(minT+0.5, 0.98)
 local function playGlowCycle()
-local t1=ts:Create(glowFrame,TweenInfo.new(1.1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=0.7})
-local t2=ts:Create(glowFrame,TweenInfo.new(1.1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=0.15})
+local t1=ts:Create(glowFrame,TweenInfo.new(glowSpeed,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=maxT})
+local t2=ts:Create(glowFrame,TweenInfo.new(glowSpeed,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{ImageTransparency=minT})
 t1:Play()
 t1.Completed:Connect(function()
 if glowFrame and glowFrame.Parent then
@@ -8698,7 +8676,6 @@ task.spawn(playGlowCycle)
 end
 
 al.UIElements.GlowFrame = glowFrame
-al.UIElements.GlowWrapper = glowWrapper
 
 function al.SetGlowColor(ar,as)
 glowFrame.ImageColor3 = as
