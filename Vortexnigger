@@ -5292,10 +5292,49 @@ Title=af.Title or"Paragraph",
 Desc=af.Desc or nil,
 
 Locked=af.Locked or false,
+
+Glow=af.Glow or false,
+GlowPulse=af.GlowPulse or false,
 }
+
+if ag.Glow==true then
+ag.GlowColor=af.GlowColor or Color3.fromRGB(100,60,200)
+elseif typeof(ag.Glow)=="Color3" then
+ag.GlowColor=ag.Glow
+ag.Glow=true
+else
+ag.Glow=false
+ag.GlowColor=Color3.fromRGB(100,60,200)
+end
+
 local ah=a.load'z'(af)
 
 ag.ParagraphFrame=ah
+
+if ag.Glow and ah.UIElements and ah.UIElements.Main then
+local paraGlowStroke=ab("UIStroke",{
+Color=ag.GlowColor,
+Thickness=1.5,
+Transparency=0.2,
+ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
+Parent=ah.UIElements.Main,
+})
+ag.UIElements=ag.UIElements or{}
+ag.UIElements.GlowStroke=paraGlowStroke
+
+if ag.GlowPulse then
+task.spawn(function()
+local glowStroke=ag.UIElements.GlowStroke
+while glowStroke and glowStroke.Parent do
+aa.Tween(glowStroke,1.2,{Transparency=0.7},Enum.EasingStyle.Sine,Enum.EasingDirection.InOut):Play()
+task.wait(1.2)
+if not(glowStroke and glowStroke.Parent)then break end
+aa.Tween(glowStroke,1.2,{Transparency=0.2},Enum.EasingStyle.Sine,Enum.EasingDirection.InOut):Play()
+task.wait(1.2)
+end
+end)
+end
+end
 if af.Buttons and#af.Buttons>0 then
 local ai=ab("Frame",{
 Size=UDim2.new(1,0,0,38),
