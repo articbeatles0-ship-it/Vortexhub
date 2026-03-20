@@ -5306,6 +5306,55 @@ al.Size=UDim2.new(1,0,0,38)
 end
 end
 
+function ag.SetViewport(aE, aF)
+-- aF = { Model = Instance, Distance = number, Height = number }
+if not aF then return end
+local viewportHeight = aF.Height or 120
+local existingVP = ag.UIElements.Container:FindFirstChildOfClass("ViewportFrame")
+if existingVP then existingVP:Destroy() end
+local vp = Instance.new("ViewportFrame")
+vp.Size = UDim2.new(1, 0, 0, viewportHeight)
+vp.BackgroundTransparency = 1
+vp.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+vp.LightColor = Color3.fromRGB(255, 255, 255)
+vp.LightDirection = Vector3.new(-1, -2, -1)
+vp.Ambient = Color3.fromRGB(180, 180, 180)
+vp.Parent = ag.UIElements.Container
+local vpCamera = Instance.new("Camera")
+vpCamera.Parent = vp
+vp.CurrentCamera = vpCamera
+if aF.Model then
+    local modelClone = aF.Model:Clone()
+    modelClone.Parent = vp
+    local cf, size = modelClone:GetBoundingBox()
+    local dist = aF.Distance or (size.Magnitude * 1.5)
+    vpCamera.CFrame = CFrame.new(cf.Position + Vector3.new(dist, dist * 0.5, dist), cf.Position)
+end
+ag.UIElements.Viewport = vp
+ag.UIElements.ViewportCamera = vpCamera
+return vp, vpCamera
+end
+
+function ag.UpdateViewport(aE, aF)
+-- aF = { Model = Instance } to swap the model in the viewport
+if not ag.UIElements.Viewport then return end
+local vp = ag.UIElements.Viewport
+for _, child in ipairs(vp:GetChildren()) do
+    if child:IsA("Model") or child:IsA("BasePart") or child:IsA("Part") then
+        child:Destroy()
+    end
+end
+if aF and aF.Model then
+    local modelClone = aF.Model:Clone()
+    modelClone.Parent = vp
+    local cf, size = modelClone:GetBoundingBox()
+    local dist = aF.Distance or (size.Magnitude * 1.5)
+    if ag.UIElements.ViewportCamera then
+        ag.UIElements.ViewportCamera.CFrame = CFrame.new(cf.Position + Vector3.new(dist, dist * 0.5, dist), cf.Position)
+    end
+end
+end
+
 return ag.__type,ag
 
 end
