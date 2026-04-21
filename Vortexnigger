@@ -357,7 +357,7 @@ end
 function p.AddLangObject(r)
 local u=p.LocalizationObjects[r]
 local v=u.Object
-local x=currentObjTranslationId
+local x=u.TranslationId
 p.UpdateLang(v,x)
 return v
 end
@@ -11040,7 +11040,7 @@ as.AcrylicPaint and as.AcrylicPaint.Frame or nil,
 az,
 aj.NewRoundFrame(as.UICorner,"Squircle",{
 ImageTransparency=1,
-Size=UDim2.new(1,0,1,-240),
+Size=UDim2.new(1,0,1,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.5,0),
 Name="Background",
@@ -12350,7 +12350,7 @@ aa.ScreenGui.Parent=ax
 aa.NotificationGui.Parent=ax
 aa.DropdownGui.Parent=ax
 end
-math.clamp(aa.TransparencyValue,0,1)
+aa.TransparencyValue=math.clamp(aa.TransparencyValue,0,1)
 
 local aw=aa.NotificationModule.Init(aa.NotificationGui)
 
