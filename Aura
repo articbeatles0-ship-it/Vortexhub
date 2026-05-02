@@ -1,0 +1,25 @@
+local a={}local function b(c,d)for _,e in c:GetChildren()do if e:IsA(d)then return e end end end
+local function f(g,h,i)for _,j in g:GetChildren()do if j:IsA("UIGradient")then j:Destroy()end end local k={}for l,m in h do k[#k+1]=ColorSequenceKeypoint.new((l-1)/(#h-1),m)end local n=Instance.new("UIGradient")n.Color=ColorSequence.new(k)n.Rotation=i or 90 n.Parent=g end
+local function o(p,q,r)for _,s in q:GetChildren()do if s:IsA("ImageLabel")then s.ImageColor3=r p.Registry[s]=nil break end end end
+local function t(u,v,w)local x for _,y in v:GetChildren()do if y:IsA("TextLabel")and y.TextSize==15 then x=y break end end if not x then return end local z for _,A in v:GetChildren()do if A:IsA("Frame")and A.Size.Y.Offset==1 and math.abs(A.Position.Y.Offset-34)<2 then z=A break end end local B=Instance.new("TextLabel")B.BackgroundTransparency=1 B.Size=UDim2.new(1,-24,0,14)B.Position=UDim2.fromOffset(x.Position.X.Offset+12,21)B.Text=w B.TextSize=11 B.TextTransparency=0.45 B.TextXAlignment=Enum.TextXAlignment.Left B.FontFace=x.FontFace B.TextColor3=x.TextColor3 B.RichText=true B.Parent=v u:AddToRegistry(B,{TextColor3="FontColor"})if z then z.Position=UDim2.fromOffset(0,48)end for _,C in v:GetChildren()do if C:IsA("Frame")and math.abs(C.Position.Y.Offset-35)<2 then C.Position=UDim2.fromOffset(0,49)C.Size=UDim2.new(1,0,1,-49)break end end end
+local function D(E)local F=E.ScreenGui if not F then return end local G=F:FindFirstChild("Main")if not G then return end for _,H in G:GetChildren()do if H:IsA("Frame")and H.Size.Y.Offset==48 then for _,I in H:GetChildren()do if I:IsA("Frame")then for _,J in I:GetChildren()do if J:IsA("ImageLabel")then return J end end end end end end end
+local function K(L,M)if M._ExtPatched then return end M._ExtPatched=true local N=M.AddGroupbox M.AddGroupbox=function(O,P)local Q=N(O,P)if P.IconColor and typeof(P.IconColor)=="Color3"then o(L,Q.Holder,P.IconColor)end if P.Gradient and typeof(P.Gradient)=="table"and #P.Gradient>=2 then f(Q.Holder,P.Gradient,P.GradientRotation)end if P.Subtitle and typeof(P.Subtitle)=="string"and P.Subtitle~=""then t(L,Q.Holder,P.Subtitle)end R(L,Q)return Q end
+M.AddLeftGroupbox=function(S,T,U,V)local W={Side=1,Name=T,IconName=U}if typeof(V)=="table"then for X,Y in V do W[X]=Y end end return M.AddGroupbox(S,W)end
+M.AddRightGroupbox=function(Z,a0,a1,a2)local a3={Side=2,Name=a0,IconName=a1}if typeof(a2)=="table"then for a4,a5 in a2 do a3[a4]=a5 end end return M.AddGroupbox(Z,a3)end end
+function R(a6,a7)if a7._ExtPatched then return end a7._ExtPatched=true local a8=getmetatable(a7)if not a8 or not a8.__index then return end local a9=a8.__index
+if a9.AddLabel then a7.AddLabel=function(b0,...)local b1={...}local b2 local b3=b1[#b1]if typeof(b3)=="table"and b3.TextColor then b2=table.remove(b1,#b1)end local b4=a9.AddLabel(b0,table.unpack(b1))if b2 and b2.TextColor and b4 and b4.TextLabel then b4.TextLabel.TextColor3=b2.TextColor a6.Registry[b4.TextLabel]=nil end return b4 end end
+if a9.AddToggle then a7.AddToggle=function(b5,b6,b7)local b8=b7 and b7.TextColor local b9=a9.AddToggle(b5,b6,b7)if b8 and b9 and b9.TextLabel then b9.TextLabel.TextColor3=b8 a6.Registry[b9.TextLabel]=nil end return b9 end end
+if a9.AddCheckbox then a7.AddCheckbox=function(c0,c1,c2)local c3=c2 and c2.TextColor local c4=a9.AddCheckbox(c0,c1,c2)if c3 and c4 and c4.TextLabel then c4.TextLabel.TextColor3=c3 a6.Registry[c4.TextLabel]=nil end return c4 end end
+if a9.AddButton then a7.AddButton=function(c5,...)local c6=select(1,...)local c7=typeof(c6)=="table"and c6.TextColor local c8=a9.AddButton(c5,...)if c7 and c8 and c8.Base then c8.Base.TextColor3=c7 if a6.Registry[c8.Base]then a6.Registry[c8.Base].TextColor3=nil end end return c8 end end
+if a9.AddSlider then a7.AddSlider=function(c9,d0,d1)local d2=d1 and d1.TextColor local d3=a9.AddSlider(c9,d0,d1)if d2 and d3 and d3.Holder then local d4=b(d3.Holder,"TextLabel")if d4 then d4.TextColor3=d2 a6.Registry[d4]=nil end end return d3 end end end
+function a:Apply(d5)self.Library=d5 local d6=d5.CreateWindow d5.CreateWindow=function(d7,d8)local d9=d6(d7,d8)
+if d8.WindowIconColor and typeof(d8.WindowIconColor)=="Color3"then task.defer(function()local e0=D(d5)if e0 then e0.ImageColor3=d8.WindowIconColor d5.Registry[e0]=nil end end)end
+if d8.StaticTitle==true then d9:HideTabInfo()d9.ShowTabInfo=function()end d9.HideTabInfo=function()end end
+local e1=d9.AddTab d9.AddTab=function(e2,...)local e3=e1(e2,...)K(d5,e3)return e3 end
+local e4=d9.AddSpecialTab if e4 then d9.AddSpecialTab=function(e5,...)local e6=e4(e5,...)K(d5,e6)return e6 end end
+self._Window=d9 return d9 end return self end
+function a:SetGroupboxGradient(e7,e8,e9)f(e7.Holder,e8,e9)end
+function a:SetIconColor(f0,f1)o(self.Library,f0.Holder,f1)end
+function a:SetSubtitle(f2,f3)t(self.Library,f2.Holder,f3)end
+function a:SetWindowIconColor(f4)local f5=D(self.Library)if f5 then f5.ImageColor3=f4 self.Library.Registry[f5]=nil end end
+return a
